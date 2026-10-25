@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#070b12" />
+  <meta name="description" content="Crypto AI Pro — an AI-native crypto intelligence and trading terminal." />
+  <title>Crypto AI Pro — AI Trading Terminal</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%237c5cff'/%3E%3Cstop offset='1' stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='40' height='40' rx='11' fill='%230b1020'/%3E%3Cpath d='M20 6l12 7v14l-12 7-12-7V13z' fill='none' stroke='url(%23g)' stroke-width='2.4'/%3E%3Cpath d='M14 24l4-5 3 3 5-7' fill='none' stroke='%2322d3ee' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <svg class="svg-sprite" aria-hidden="true">
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></symbol>
+    <symbol id="i-candles" viewBox="0 0 24 24"><path d="M7 4v3m0 10v3M17 3v4m0 9v4"/><rect x="4.5" y="7" width="5" height="10" rx="1.4"/><rect x="14.5" y="7" width="5" height="9" rx="1.4"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z"/><path d="M18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M4 8.5V7a2.5 2.5 0 0 1 2.5-2.5h10A2.5 2.5 0 0 1 19 7v1.5"/><rect x="3" y="8.5" width="18" height="11" rx="3"/><path d="M16 14h2.5"/></symbol>
+    <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9.5 3h5M10.5 3v6L5 18.2A1.9 1.9 0 0 0 6.7 21h10.6a1.9 1.9 0 0 0 1.7-2.8L13.5 9V3"/><path d="M7.4 14h9.2"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 11.7a8.4 8.4 0 0 1-9 8.3 9 9 0 0 1-3.2-.7L4 21l1.4-4.2A8.2 8.2 0 0 1 3 11.7 8.4 8.4 0 0 1 12 3.4a8.4 8.4 0 0 1 9 8.3Z"/><path d="M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8.5a6 6 0 1 0-12 0c0 6-2.2 7.5-2.2 7.5h16.4S18 14.5 18 8.5Z"/><path d="M10 20a2.2 2.2 0 0 0 4 0"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.4-3.4"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3 10.5 13.5M21 3l-6.6 18-3.9-7.5L3 9.6 21 3Z"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10-6.5-10-6.5Z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4.8 6v5.5c0 4.5 3 7.4 7.2 9.5 4.2-2.1 7.2-5 7.2-9.5V6L12 3Z"/><path d="m9 12 2 2 4-4.2"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4.5 13.5H11L10 22l8.5-11.5H12L13 2Z"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5.3l3.2 2"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2.4"/><circle cx="8" cy="17" r="2.4"/></symbol>
+    <symbol id="i-trend" viewBox="0 0 24 24"><path d="M3 17l5.5-5.5 3.5 3.5L21 6"/><path d="M15.5 6H21v5.5"/></symbol>
+    <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h4l2.2-6 4 12 2.3-6H21"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="3"/><path d="M8.5 10V7.5a3.5 3.5 0 0 1 7 0V10"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11m0 0 4-4m-4 4-4-4M5 20h14"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 8.5A8 8 0 0 0 5.2 6.2L3.5 8M4 15.5a8 8 0 0 0 14.8 2.3L20.5 16"/><path d="M3.5 4v4h4M20.5 20v-4h-4"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/></symbol>
+    <symbol id="i-brain" viewBox="0 0 24 24"><path d="M9.5 4.5A3.5 3.5 0 0 0 6 8a3.4 3.4 0 0 0-1.5 5.8A3.6 3.6 0 0 0 7 19.5a3.5 3.5 0 0 0 5.5-1V5.8a3.5 3.5 0 0 0-3-1.3Z"/><path d="M14.5 4.5A3.5 3.5 0 0 1 18 8a3.4 3.4 0 0 1 1.5 5.8 3.6 3.6 0 0 1-2.5 5.7 3.5 3.5 0 0 1-5.5-1"/></symbol>
+  </svg>
+
+  <div class="app-shell">
+    <div class="sidebar-scrim" id="sidebarScrim"></div>
+
+    <aside class="sidebar" id="sidebar" aria-label="Primary navigation">
+      <a class="brand" href="#dashboard" aria-label="Crypto AI Pro home">
+        <span class="brand-mark">
+          <svg viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8b6cff"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs><path d="M20 3.5 34 11.5v17L20 36.5 6 28.5v-17z" fill="none" stroke="url(#brandGrad)" stroke-width="2.2"/><path d="m12.5 24.5 5-6 3.5 3.5 6.5-8" fill="none" stroke="#22d3ee" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="27.5" cy="13" r="2.4" fill="#8b6cff"/></svg>
+        </span>
+        <span class="brand-copy"><strong>Crypto AI</strong><span>PRO TERMINAL</span></span>
+      </a>
+
+      <div class="engine-badge">
+        <span class="engine-dot"></span>
+        <div><strong>Oracle v4.2</strong><span>Neural engine online</span></div>
+        <span class="engine-ping"></span>
+      </div>
+
+      <nav class="nav">
+        <p class="nav-label">Workspace</p>
+        <a class="nav-item active" href="#dashboard" data-nav="dashboard"><svg><use href="#i-grid"/></svg><span>Overview</span></a>
+        <a class="nav-item" href="#markets" data-nav="markets"><svg><use href="#i-candles"/></svg><span>Markets</span><span class="nav-badge">10</span></a>
+        <a class="nav-item" href="#signals" data-nav="signals"><svg><use href="#i-spark"/></svg><span>AI Signals</span><span class="nav-badge hot">3</span></a>
+        <a class="nav-item" href="#portfolio" data-nav="portfolio"><svg><use href="#i-wallet"/></svg><span>Portfolio</span></a>
+
+        <p class="nav-label">Intelligence</p>
+        <a class="nav-item" href="#backtest" data-nav="backtest"><svg><use href="#i-flask"/></svg><span>Backtest Lab</span></a>
+        <button class="nav-item" type="button" data-open-copilot><svg><use href="#i-chat"/></svg><span>AI Copilot</span><span class="nav-kbd">⌘K</span></button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="upsell">
+          <div class="upsell-glow"></div>
+          <div class="upsell-top"><svg><use href="#i-bolt"/></svg><span>PRO PLAN</span></div>
+          <strong>Unlimited neural scans</strong>
+          <div class="usage"><span style="width:68%"></span></div>
+          <div class="usage-copy"><span>68% of monthly scans</span><span>Renews in 12d</span></div>
+          <button class="upsell-btn" type="button" data-demo-action="Upgrade">Upgrade plan <svg><use href="#i-arrow-up"/></svg></button>
+        </div>
+        <div class="user-row">
+          <span class="avatar">AK<span class="online"></span></span>
+          <div class="user-meta"><strong>Alex Kim</strong><span>Pro trader</span></div>
+          <button class="icon-btn" type="button" aria-label="Settings" data-demo-action="Settings"><svg><use href="#i-settings"/></svg></button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main-column">
+      <header class="topbar">
+        <button class="icon-btn mobile-menu" id="menuBtn" type="button" aria-label="Open menu"><svg><use href="#i-menu"/></svg></button>
+        <div class="search-wrap">
+          <div class="search">
+            <svg><use href="#i-search"/></svg>
+            <input id="globalSearch" type="text" placeholder="Search markets, signals, wallets…" autocomplete="off" aria-label="Search markets, signals and wallets" />
+            <kbd>/</kbd>
+          </div>
+          <div class="search-results" id="searchResults" hidden></div>
+        </div>
+        <div class="top-actions">
+          <div class="market-status"><span class="live-dot"></span><span>Markets live</span><span class="status-sep"></span><span class="status-time" id="marketClock">24/7</span></div>
+          <button class="icon-btn" id="alertsBtn" type="button" aria-label="Notifications" aria-expanded="false">
+            <svg><use href="#i-bell"/></svg><span class="notif-dot"></span>
+          </button>
+          <button class="icon-btn hide-sm" type="button" aria-label="Toggle data source" data-demo-action="Data source"><svg><use href="#i-pulse"/></svg></button>
+          <button class="avatar-btn" type="button" aria-label="Account menu" data-demo-action="Account menu">AK</button>
+        </div>
+        <div class="popover alerts-popover" id="alertsPopover" hidden>
+          <div class="popover-head"><strong>Notifications</strong><span class="mini-pill">3 new</span></div>
+          <div class="notif-list">
+            <button class="notif-item" type="button" data-open-copilot data-copilot-prompt="Explain the ETH whale alert and what I should do">
+              <span class="notif-ico mint"><svg><use href="#i-pulse"/></svg></span>
+              <span><strong>Whale accumulation detected</strong><span>2,140 ETH moved off exchanges · 8m ago</span></span>
+            </button>
+            <button class="notif-item" type="button" data-navto="signals">
+              <span class="notif-ico violet"><svg><use href="#i-spark"/></svg></span>
+              <span><strong>New high-conviction signal</strong><span>SOL long · 91% confidence · 21m ago</span></span>
+            </button>
+            <button class="notif-item" type="button" data-navto="portfolio">
+              <span class="notif-ico amber"><svg><use href="#i-shield"/></svg></span>
+              <span><strong>Risk check complete</strong><span>Portfolio beta down to 1.14 · 1h ago</span></span>
+            </button>
+          </div>
+          <button class="popover-foot" type="button" data-demo-action="All notifications">View all notifications</button>
+        </div>
+      </header>
+
+      <div class="ticker-strip" id="tickerStrip" aria-label="Live market ticker"></div>
+
+      <main class="content" id="content">
+        <section class="page active" data-page="dashboard">
+          <div class="page-head">
+            <div>
+              <p class="eyebrow"><span class="live-dot"></span><span id="todayLabel">Sunday, October 25</span><span class="eyebrow-sep">/</span><span id="dataSourceLabel">Neural desk</span></p>
+              <h1>Good evening, Alex</h1>
+              <p class="sub">Your AI desk found <strong class="accent-text">3 high-conviction setups</strong> while you were away.</p>
+            </div>
+            <div class="page-actions">
+              <button class="btn ghost" type="button" data-open-copilot data-copilot-prompt="Give me a quick market briefing"><svg><use href="#i-brain"/></svg>Ask Copilot</button>
+              <button class="btn primary" type="button" data-open-trade><svg><use href="#i-plus"/></svg>Execute trade</button>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <article class="card stat-card">
+              <div class="stat-top"><span>Portfolio value</span><span class="stat-ico mint"><svg><use href="#i-wallet"/></svg></span></div>
+              <div class="stat-value" id="statPortfolio">$168,284.19</div>
+              <div class="stat-bottom"><span class="delta up" id="statPortfolioDelta">+$4,812.90</span><span class="stat-muted">today</span><canvas class="stat-spark" data-spark="portfolio" aria-hidden="true"></canvas></div>
+            </article>
+            <article class="card stat-card">
+              <div class="stat-top"><span>24h P&amp;L</span><span class="stat-ico violet"><svg><use href="#i-trend"/></svg></span></div>
+              <div class="stat-value" id="statPnl">+$6,421.08</div>
+              <div class="stat-bottom"><span class="delta up" id="statPnlPct">+3.35%</span><span class="stat-muted">vs. yesterday</span><div class="micro-bars" id="pnlBars" aria-hidden="true"></div></div>
+            </article>
+            <article class="card stat-card">
+              <div class="stat-top"><span>AI win rate</span><span class="stat-ico amber"><svg><use href="#i-spark"/></svg></span></div>
+              <div class="stat-value">87.4<span class="unit">%</span></div>
+              <div class="stat-bottom"><span class="delta up">+2.1%</span><span class="stat-muted">last 30 days</span>
+                <span class="mini-ring" style="--p:87.4"><span>87</span></span>
+              </div>
+            </article>
+            <article class="card stat-card">
+              <div class="stat-top"><span>Risk exposure</span><span class="stat-ico rose"><svg><use href="#i-shield"/></svg></span></div>
+              <div class="stat-value">Moderate</div>
+              <div class="stat-bottom"><span class="risk-meter"><i style="width:42%"></i></span><span class="stat-muted">42 / 100</span></div>
+            </article>
+          </div>
+
+          <div class="dashboard-grid">
+            <article class="card perf-card">
+              <div class="card-head perf-head">
+                <div>
+                  <div class="title-line"><h2>Portfolio performance</h2><span class="live-tag"><span class="live-dot"></span>AI tracked</span></div>
+                  <div class="perf-value-row"><strong id="perfValue">$168,284.19</strong><span class="delta up" id="perfDelta">+12.84%</span></div>
+                  <p class="card-sub" id="perfSub">Across 5 assets · updated moments ago</p>
+                </div>
+                <div class="segmented" id="rangeTabs" role="tablist" aria-label="Chart range">
+                  <button type="button" class="active" data-range="1D">1D</button>
+                  <button type="button" data-range="1W">1W</button>
+                  <button type="button" data-range="1M">1M</button>
+                  <button type="button" data-range="3M">3M</button>
+                  <button type="button" data-range="1Y">1Y</button>
+                </div>
+              </div>
+              <div class="chart-shell" id="perfChartShell">
+                <canvas id="portfolioChart" aria-label="Portfolio performance chart"></canvas>
+                <div class="chart-tooltip" id="perfTooltip" hidden></div>
+                <div class="chart-badge"><svg><use href="#i-spark"/></svg>Forecast +8.6%</div>
+              </div>
+              <div class="chart-foot">
+                <div class="legend">
+                  <span><i class="legend-line violet"></i>Portfolio</span>
+                  <span><i class="legend-line dashed"></i>AI forecast</span>
+                  <span><i class="legend-line faint"></i>BTC benchmark</span>
+                </div>
+                <span class="chart-note">Backtested on Oracle v4.2 · 4h candles</span>
+              </div>
+            </article>
+
+            <div class="side-stack">
+              <article class="card signal-card" id="topSignalCard">
+                <div class="signal-glow"></div>
+                <div class="signal-head">
+                  <span class="kicker"><svg><use href="#i-spark"/></svg>Top AI signal</span>
+                  <span class="side-pill long">LONG</span>
+                </div>
+                <div class="signal-asset">
+                  <span class="coin-mark eth">Ξ</span>
+                  <div><strong>Ethereum</strong><span>ETH / USDT · 4H</span></div>
+                  <div class="confidence-ring" style="--p:92"><span><strong>92</strong><small>%</small></span></div>
+                </div>
+                <p class="signal-thesis">Momentum compression above the 50-EMA with rising spot demand. Oracle expects a liquidity sweep into <strong>$2,480</strong>.</p>
+                <div class="signal-levels">
+                  <div><span>Entry</span><strong id="sigEntry">$2,364.39</strong></div>
+                  <div><span>Target</span><strong class="mint-text" id="sigTarget">$2,648.00</strong></div>
+                  <div><span>Stop</span><strong class="rose-text" id="sigStop">$2,241.00</strong></div>
+                </div>
+                <div class="signal-metrics">
+                  <span><em>Whale flow</em><strong>+$42.6M</strong></span>
+                  <span><em>RSI 4H</em><strong>58.4</strong></span>
+                  <span><em>Funding</em><strong>+0.011%</strong></span>
+                  <span><em>Model agreement</em><strong>7 / 8</strong></span>
+                </div>
+                <div class="signal-foot">
+                  <span class="signal-meta"><svg><use href="#i-clock"/></svg>R:R 2.3x · expires 6h</span>
+                  <button class="btn tiny primary" type="button" data-open-trade data-asset="ETH">Execute</button>
+                  <button class="btn tiny ghost" type="button" data-open-copilot data-copilot-prompt="Walk me through the ETH long signal">Thesis</button>
+                </div>
+              </article>
+
+              <article class="card sentiment-card">
+                <div class="sentiment-head"><h3>Market sentiment</h3><span class="tiny-label">Fear &amp; Greed</span></div>
+                <div class="sentiment-value"><strong>74</strong><span class="greed">Greed</span><span class="delta up">+6</span></div>
+                <div class="sentiment-bar"><span style="width:74%"></span><i style="left:74%"></i></div>
+                <div class="sentiment-scale"><span>Extreme fear</span><span>Neutral</span><span>Extreme greed</span></div>
+              </article>
+            </div>
+          </div>
+
+          <div class="lower-grid">
+            <article class="card watchlist-card">
+              <div class="card-head">
+                <div><h2>Watchlist</h2><p class="card-sub">Your curated market radar</p></div>
+                <div class="card-head-actions">
+                  <button class="chip active" type="button" data-watch-filter="all">All</button>
+                  <button class="chip" type="button" data-watch-filter="trending">Trending</button>
+                  <button class="btn tiny ghost" type="button" data-navto="markets">View markets <svg><use href="#i-arrow-right"/></svg></button>
+                </div>
+              </div>
+              <div class="table-scroll">
+                <table class="data-table watch-table">
+                  <thead><tr><th>Asset</th><th>Price</th><th>24h</th><th>7d</th><th>AI score</th><th></th></tr></thead>
+                  <tbody id="watchlistBody"></tbody>
+                </table>
+              </div>
+            </article>
+
+            <article class="card intel-card">
+              <div class="card-head">
+                <div><h2>AI intelligence</h2><p class="card-sub">Signals from 42 data feeds</p></div>
+                <button class="icon-btn" type="button" aria-label="Refresh intelligence" id="refreshIntel"><svg><use href="#i-refresh"/></svg></button>
+              </div>
+              <div class="intel-list" id="intelList">
+                <button class="intel-item" type="button" data-open-copilot data-copilot-prompt="Tell me more about the ETH whale accumulation">
+                  <span class="intel-ico mint"><svg><use href="#i-pulse"/></svg></span>
+                  <span class="intel-copy"><strong>Whale accumulation detected</strong><span>2,140 ETH moved off exchanges in 3 hours.</span><span class="intel-meta"><em class="impact high">High impact</em>· 8m ago</span></span>
+                  <svg class="intel-arrow"><use href="#i-chevron-right"/></svg>
+                </button>
+                <button class="intel-item" type="button" data-open-copilot data-copilot-prompt="What do funding rates mean for my portfolio right now">
+                  <span class="intel-ico violet"><svg><use href="#i-trend"/></svg></span>
+                  <span class="intel-copy"><strong>Funding rates reset across majors</strong><span>Perp leverage flushed — healthier spot-led move.</span><span class="intel-meta"><em class="impact medium">Medium</em>· 24m ago</span></span>
+                  <svg class="intel-arrow"><use href="#i-chevron-right"/></svg>
+                </button>
+                <button class="intel-item" type="button" data-open-copilot data-copilot-prompt="Analyze the SOL resistance breakout">
+                  <span class="intel-ico amber"><svg><use href="#i-spark"/></svg></span>
+                  <span class="intel-copy"><strong>SOL pressing multi-week resistance</strong><span>Break above $104.80 unlocks trend continuation.</span><span class="intel-meta"><em class="impact low">Watch</em>· 47m ago</span></span>
+                  <svg class="intel-arrow"><use href="#i-chevron-right"/></svg>
+                </button>
+              </div>
+              <button class="intel-footer" type="button" data-open-copilot data-copilot-prompt="Summarize all market intelligence for me"><svg><use href="#i-brain"/></svg>Ask Copilot for a full briefing<svg><use href="#i-arrow-right"/></svg></button>
+            </article>
+          </div>
+        </section>
+
+        <section class="page" data-page="markets">
+          <div class="page-head">
+            <div>
+              <p class="eyebrow"><span class="live-dot"></span>Live market data<span class="eyebrow-sep">/</span><span id="marketsUpdated">just now</span></p>
+              <h1>Markets</h1>
+              <p class="sub">Every asset, scored by the Oracle neural model in real time.</p>
+            </div>
+            <div class="page-actions">
+              <button class="btn ghost" type="button" data-demo-action="Refresh market data"><svg><use href="#i-refresh"/></svg>Refresh</button>
+              <button class="btn primary" type="button" data-open-trade><svg><use href="#i-plus"/></svg>New position</button>
+            </div>
+          </div>
+
+          <div class="mini-stats">
+            <div class="mini-stat"><span>Global market cap</span><strong>$2.41T</strong><em class="up">+1.24%</em></div>
+            <div class="mini-stat"><span>24h volume</span><strong>$84.2B</strong><em class="up">+8.6%</em></div>
+            <div class="mini-stat"><span>BTC dominance</span><strong>67.4%</strong><em class="down">−0.3%</em></div>
+            <div class="mini-stat"><span>Active AI signals</span><strong>12</strong><em class="up">3 new</em></div>
+          </div>
+
+          <article class="card markets-card">
+            <div class="market-toolbar">
+              <div class="chips" id="marketCats">
+                <button class="chip active" type="button" data-cat="all">All assets</button>
+                <button class="chip" type="button" data-cat="Layer 1">Layer 1</button>
+                <button class="chip" type="button" data-cat="DeFi">DeFi</button>
+                <button class="chip" type="button" data-cat="AI">AI</button>
+                <button class="chip" type="button" data-cat="Scaling">Scaling</button>
+              </div>
+              <div class="toolbar-right">
+                <label class="table-search"><svg><use href="#i-search"/></svg><input id="marketSearch" type="text" placeholder="Filter assets…" aria-label="Filter assets" /></label>
+                <div class="select-wrap"><select id="marketSort" aria-label="Sort assets"><option value="rank">Rank</option><option value="ai">AI score</option><option value="change">24h change</option><option value="mcap">Market cap</option></select><svg><use href="#i-chevron-down"/></svg></div>
+              </div>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table markets-table">
+                <thead><tr><th>#</th><th>Asset</th><th>Price</th><th>24h</th><th>7d trend</th><th>Market cap</th><th>Volume</th><th>AI score</th><th></th></tr></thead>
+                <tbody id="marketsBody"></tbody>
+              </table>
+            </div>
+            <div class="table-foot"><span id="marketsCount">10 assets</span><span>Prices via CoinGecko · demo portfolio</span></div>
+          </article>
+        </section>
+
+        <section class="page" data-page="signals">
+          <div class="page-head">
+            <div>
+              <p class="eyebrow"><span class="live-dot"></span>Oracle v4.2<span class="eyebrow-sep">/</span>42 feeds scanned</p>
+              <h1>AI Signals</h1>
+              <p class="sub">High-conviction setups ranked by model confidence and risk-adjusted edge.</p>
+            </div>
+            <div class="page-actions">
+              <button class="btn ghost" type="button" data-demo-action="Signal preferences"><svg><use href="#i-settings"/></svg>Preferences</button>
+              <button class="btn primary" type="button" id="runScanBtn"><svg><use href="#i-refresh"/></svg>Run AI scan</button>
+            </div>
+          </div>
+
+          <div class="mini-stats signal-stats">
+            <div class="mini-stat"><span>Active signals</span><strong>12</strong><em class="up">3 high conviction</em></div>
+            <div class="mini-stat"><span>30d win rate</span><strong>87.4%</strong><em class="up">+2.1%</em></div>
+            <div class="mini-stat"><span>Avg. R:R</span><strong>2.4x</strong><em class="up">above target</em></div>
+            <div class="mini-stat"><span>30d return</span><strong>+18.6%</strong><em class="up">vs BTC +4.2%</em></div>
+          </div>
+
+          <div class="signal-grid" id="signalGrid"></div>
+          <div class="signals-note"><svg><use href="#i-shield"/></svg>Signals are generated for demonstration. Always do your own research — never risk more than you can afford to lose.</div>
+        </section>
+
+        <section class="page" data-page="portfolio">
+          <div class="page-head">
+            <div>
+              <p class="eyebrow"><span class="live-dot"></span>Connected wallet<span class="eyebrow-sep">/</span>0x7A2E…9F31</p>
+              <h1>Portfolio</h1>
+              <p class="sub">A live view of your positions, risk and performance.</p>
+            </div>
+            <div class="page-actions">
+              <button class="btn ghost" type="button" data-demo-action="Deposit"><svg><use href="#i-download"/></svg>Deposit</button>
+              <button class="btn primary" type="button" data-open-trade><svg><use href="#i-plus"/></svg>Execute trade</button>
+            </div>
+          </div>
+
+          <div class="stats-grid portfolio-stats">
+            <article class="card stat-card"><div class="stat-top"><span>Net worth</span><span class="stat-ico mint"><svg><use href="#i-wallet"/></svg></span></div><div class="stat-value" id="pfNetWorth">$168,284.19</div><div class="stat-bottom"><span class="delta up" id="pfNetDelta">+12.84%</span><span class="stat-muted">all time</span></div></article>
+            <article class="card stat-card"><div class="stat-top"><span>Available cash</span><span class="stat-ico violet"><svg><use href="#i-bolt"/></svg></span></div><div class="stat-value" id="pfCash">$8,420.44</div><div class="stat-bottom"><span class="stat-muted">USDT ready to deploy</span></div></article>
+            <article class="card stat-card"><div class="stat-top"><span>Unrealized P&amp;L</span><span class="stat-ico amber"><svg><use href="#i-trend"/></svg></span></div><div class="stat-value" id="pfUnrealized">+$8,245.60</div><div class="stat-bottom"><span class="delta up" id="pfUnrealizedPct">+5.2%</span><span class="stat-muted">open positions</span></div></article>
+            <article class="card stat-card"><div class="stat-top"><span>Realized P&amp;L</span><span class="stat-ico mint"><svg><use href="#i-shield"/></svg></span></div><div class="stat-value">+$12,480.18</div><div class="stat-bottom"><span class="delta up">+31.4%</span><span class="stat-muted">this year</span></div></article>
+          </div>
+
+          <div class="portfolio-grid">
+            <article class="card holdings-card">
+              <div class="card-head"><div><h2>Holdings</h2><p class="card-sub">Live mark-to-market across 5 assets</p></div><button class="btn tiny ghost" type="button" data-open-trade><svg><use href="#i-plus"/></svg>Add position</button></div>
+              <div class="table-scroll">
+                <table class="data-table holdings-table">
+                  <thead><tr><th>Asset</th><th>Holdings</th><th>Price</th><th>Value</th><th>Allocation</th><th>Unrealized P&amp;L</th><th></th></tr></thead>
+                  <tbody id="holdingsBody"></tbody>
+                </table>
+              </div>
+            </article>
+
+            <div class="portfolio-side">
+              <article class="card allocation-card">
+                <div class="card-head"><div><h2>Allocation</h2><p class="card-sub">By market value</p></div><span class="tiny-label">5 assets</span></div>
+                <div class="donut-wrap"><canvas id="allocationChart" aria-label="Portfolio allocation donut chart"></canvas><div class="donut-center"><span>Total</span><strong id="donutTotal">$168.2K</strong></div></div>
+                <div class="alloc-legend" id="allocLegend"></div>
+              </article>
+
+              <article class="card risk-card">
+                <div class="card-head"><div><h2>Risk profile</h2><p class="card-sub">Oracle portfolio scan</p></div><span class="risk-pill">Moderate</span></div>
+                <div class="risk-rows">
+                  <div><span>Portfolio beta</span><strong>1.14</strong><span class="risk-track"><i style="width:57%"></i></span></div>
+                  <div><span>Max drawdown</span><strong>−8.4%</strong><span class="risk-track"><i style="width:34%"></i></span></div>
+                  <div><span>Concentration</span><strong>41%</strong><span class="risk-track"><i style="width:41%"></i></span></div>
+                  <div><span>Stablecoin buffer</span><strong>5.0%</strong><span class="risk-track"><i style="width:5%"></i></span></div>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <article class="card activity-card">
+            <div class="card-head"><div><h2>Recent activity</h2><p class="card-sub">Executions and AI-assisted trades</p></div><button class="btn tiny ghost" type="button" data-demo-action="Export activity"><svg><use href="#i-download"/></svg>Export</button></div>
+            <div class="activity-list" id="activityList"></div>
+          </article>
+        </section>
+
+        <section class="page" data-page="backtest">
+          <div class="page-head">
+            <div>
+              <p class="eyebrow"><span class="live-dot"></span>Strategy lab<span class="eyebrow-sep">/</span>Historical simulation</p>
+              <h1>Backtest Lab</h1>
+              <p class="sub">Stress-test any strategy against 5 years of market data in seconds.</p>
+            </div>
+            <div class="page-actions"><button class="btn ghost" type="button" data-demo-action="Export report"><svg><use href="#i-download"/></svg>Export report</button></div>
+          </div>
+
+          <div class="backtest-grid">
+            <article class="card config-card">
+              <div class="card-head"><div><h2>Configure</h2><p class="card-sub">Build your simulation</p></div><span class="step-pill">01</span></div>
+              <label class="field"><span>Strategy</span><div class="select-wrap full"><select id="btStrategy"><option>Neural Momentum</option><option>Mean Reversion</option><option>Breakout Hunter</option><option>Funding Arbitrage</option></select><svg><use href="#i-chevron-down"/></svg></div></label>
+              <div class="field-row">
+                <label class="field"><span>Asset</span><div class="select-wrap full"><select id="btAsset"><option>BTC / USDT</option><option>ETH / USDT</option><option>SOL / USDT</option><option>Portfolio basket</option></select><svg><use href="#i-chevron-down"/></svg></div></label>
+                <label class="field"><span>Period</span><div class="select-wrap full"><select id="btPeriod"><option>12 months</option><option>6 months</option><option>24 months</option><option>5 years</option></select><svg><use href="#i-chevron-down"/></svg></div></label>
+              </div>
+              <label class="field"><span>Starting capital</span><div class="input-money"><span>$</span><input id="btCapital" type="text" value="25,000" inputmode="numeric" /></div></label>
+              <label class="field"><span>Risk per trade <b id="btRiskValue">2.0%</b></span><input id="btRisk" class="range" type="range" min="0.5" max="5" step="0.5" value="2" /><div class="range-scale"><span>0.5%</span><span>Conservative</span><span>5%</span></div></label>
+              <button class="btn primary wide" type="button" id="runBacktestBtn"><svg><use href="#i-play"/></svg>Run backtest</button>
+              <p class="config-note"><svg><use href="#i-lock"/></svg>Simulations are local and never place real orders.</p>
+            </article>
+
+            <article class="card results-card">
+              <div class="card-head"><div><h2>Results</h2><p class="card-sub" id="btResultSub">Neural Momentum · BTC / USDT · 12 months</p></div><span class="result-badge" id="btBadge"><span class="live-dot"></span>Complete</span></div>
+              <div class="results-hero">
+                <div><span class="tiny-label">Net return</span><strong id="btReturn">+42.8%</strong><span class="up" id="btReturnAbs">+$10,700.00</span></div>
+                <div class="result-chart-wrap"><canvas id="backtestChart" aria-label="Backtest equity curve"></canvas></div>
+              </div>
+              <div class="result-metrics">
+                <div><span>Sharpe ratio</span><strong id="btSharpe">2.14</strong></div>
+                <div><span>Max drawdown</span><strong class="rose-text" id="btDrawdown">−9.6%</strong></div>
+                <div><span>Win rate</span><strong id="btWinRate">71.2%</strong></div>
+                <div><span>Profit factor</span><strong id="btProfit">2.68</strong></div>
+                <div><span>Total trades</span><strong id="btTrades">148</strong></div>
+                <div><span>Avg. hold</span><strong id="btHold">3.2d</strong></div>
+              </div>
+              <div class="bt-progress" id="btProgress" hidden><span></span></div>
+            </article>
+          </div>
+
+          <article class="card trade-log-card">
+            <div class="card-head"><div><h2>Trade log</h2><p class="card-sub">Most recent simulated entries</p></div><span class="tiny-label" id="tradeLogCount">Showing 6 of 148</span></div>
+            <div class="table-scroll">
+              <table class="data-table trade-table">
+                <thead><tr><th>Date</th><th>Asset</th><th>Side</th><th>Entry</th><th>Exit</th><th>Return</th><th>Duration</th></tr></thead>
+                <tbody id="tradeLogBody"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <span>© 2026 Crypto AI Pro · Demo environment</span>
+        <span><span class="live-dot"></span><span id="footerSource">Live prices via CoinGecko</span> · Not financial advice</span>
+      </footer>
+    </div>
+  </div>
+
+  <nav class="mobile-nav" aria-label="Mobile navigation">
+    <a class="active" href="#dashboard" data-nav="dashboard"><svg><use href="#i-grid"/></svg><span>Overview</span></a>
+    <a href="#markets" data-nav="markets"><svg><use href="#i-candles"/></svg><span>Markets</span></a>
+    <a href="#signals" data-nav="signals"><svg><use href="#i-spark"/></svg><span>Signals</span></a>
+    <a href="#portfolio" data-nav="portfolio"><svg><use href="#i-wallet"/></svg><span>Portfolio</span></a>
+    <button type="button" data-open-copilot><span class="mobile-ai"><svg><use href="#i-brain"/></svg></span><span>Copilot</span></button>
+  </nav>
+
+  <div class="drawer-backdrop" id="copilotBackdrop"></div>
+  <aside class="copilot" id="copilot" aria-label="AI Copilot" aria-hidden="true">
+    <div class="copilot-head">
+      <div class="copilot-identity">
+        <span class="orb"><i></i></span>
+        <div><strong>Crypto AI Copilot</strong><span><span class="engine-dot small"></span>Oracle v4.2 · online</span></div>
+      </div>
+      <button class="icon-btn" type="button" id="closeCopilot" aria-label="Close copilot"><svg><use href="#i-close"/></svg></button>
+    </div>
+    <div class="copilot-context">
+      <span><svg><use href="#i-pulse"/></svg>Live portfolio context</span>
+      <span><svg><use href="#i-shield"/></svg>Private session</span>
+    </div>
+    <div class="copilot-messages" id="copilotMessages" aria-live="polite">
+      <div class="msg ai">
+        <span class="msg-avatar"><svg><use href="#i-spark"/></svg></span>
+        <div class="msg-bubble">
+          <p>Good evening, Alex. I've scanned <strong>42 market feeds</strong> and your portfolio. Three setups stand out tonight — <strong>ETH</strong> has the cleanest risk/reward at 92% confidence.</p>
+          <div class="msg-chips">
+            <button type="button" data-copilot-prompt="What's the strongest trade right now?">Strongest trade</button>
+            <button type="button" data-copilot-prompt="Review my portfolio risk">Review my risk</button>
+            <button type="button" data-copilot-prompt="Give me a market briefing">Market briefing</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="copilot-composer">
+      <div class="composer-box">
+        <textarea id="copilotInput" rows="1" placeholder="Ask about any asset, signal or your portfolio…" aria-label="Message Copilot"></textarea>
+        <button class="send-btn" type="button" id="copilotSend" aria-label="Send message"><svg><use href="#i-send"/></svg></button>
+      </div>
+      <p class="copilot-disclaimer">Copilot can make mistakes. Verify before trading. Not financial advice.</p>
+    </div>
+  </aside>
+
+  <div class="modal-backdrop" id="tradeBackdrop"></div>
+  <div class="modal" id="tradeModal" role="dialog" aria-modal="true" aria-labelledby="tradeTitle" aria-hidden="true">
+    <div class="modal-head">
+      <div><span class="kicker"><svg><use href="#i-bolt"/></svg>Neural execution</span><h2 id="tradeTitle">Execute trade</h2></div>
+      <button class="icon-btn" type="button" id="closeTrade" aria-label="Close trade dialog"><svg><use href="#i-close"/></svg></button>
+    </div>
+    <div class="trade-side-toggle" role="tablist" aria-label="Trade side">
+      <button class="active buy" type="button" data-side="buy">Buy</button>
+      <button type="button" data-side="sell">Sell</button>
+    </div>
+    <label class="field"><span>Asset</span><div class="select-wrap full"><select id="tradeAsset"></select><svg><use href="#i-chevron-down"/></svg></div></label>
+    <div class="trade-price-row"><span>Live price</span><strong id="tradePrice">$2,364.39</strong><span class="delta up" id="tradeChange">+0.42%</span></div>
+    <label class="field"><span>Amount</span><div class="input-money large"><span>$</span><input id="tradeAmount" type="text" value="1,000" inputmode="decimal" aria-label="Trade amount in US dollars" /></div></label>
+    <div class="quick-amounts"><button type="button" data-amt="250">$250</button><button type="button" data-amt="1000">$1,000</button><button type="button" data-amt="2500">$2,500</button><button type="button" data-amt="max">Max</button></div>
+    <div class="trade-preview">
+      <div><span>You receive</span><strong id="tradeReceive">0.4229 ETH</strong></div>
+      <div><span>Est. fee (0.10%)</span><strong id="tradeFee">$1.00</strong></div>
+      <div><span>Available cash</span><strong id="tradeAvailable">$8,420.44</strong></div>
+    </div>
+    <div class="ai-verdict"><span class="intel-ico mint"><svg><use href="#i-shield"/></svg></span><div><strong>Copilot check · low risk</strong><p id="tradeVerdict">This trade is within your risk profile and keeps ETH below 30% allocation.</p></div></div>
+    <button class="btn primary wide" type="button" id="confirmTrade">Confirm buy</button>
+  </div>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
